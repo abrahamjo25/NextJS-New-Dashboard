@@ -1,22 +1,14 @@
 "use client"
 
 import Image from 'next/image'
-// import { ArrowRight2, Calendar, Document, Element3, Folder2, Headphone, Profile2User, Setting2, Setting4, Star, Timer1, Triangle } from 'iconsax-react'
 import ProfileImage from '../_components/assets/profile.png'
 import Link, { LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCentralStore } from '@/app/Store'
-import React, { useEffect } from 'react'
-import { ArrowRight, Calendar, Folder, Headphones, LayoutDashboard, Notebook, PersonStanding, Power, Settings, Settings2, Star, Timer, Triangle } from 'lucide-react'
-import LogoutPage from '../auth/logout/page'
+import React from 'react'
+import { ArrowRight, Calendar, Folder, Headphones, LayoutDashboard, Notebook, Settings2, Star, Timer, Triangle, UsersRound } from 'lucide-react'
 function Sidebar() {
 
     const pathname = usePathname()
-    // const { setIsSidebarOpen, isSidebarOpen } = useCentralStore()
-
-    // useEffect(() => {
-    //     if (!isSidebarOpen) setIsSidebarOpen(!isSidebarOpen)
-    // }, [pathname])
 
     return (
         <div className='w-60 shrink-0 md:block h-screen sticky top-0 overflow-hidden'>
@@ -39,42 +31,42 @@ function Sidebar() {
                 <div className='flex flex-col h-full justify-between'>
                     {/* top */}
                     <div className='pt-6 text-gray-500 font-medium space-y-2 md:px-2 text-xs'>
-                        <Link href={'/app/dashboard'} className={`flex ${pathname === '/app/dashboard' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
+                        <Link href={'/dashboard'} className={`flex ${pathname === '/dashboard/dashboard' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
                             <LayoutDashboard size={16} />
                             Dashboard
                         </Link>
 
-                        <Link href={'/app/teams'} className={`flex ${pathname === '/app/teams' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
-                            <PersonStanding size={16} />
+                        <Link href={'/dashboard/teams'} className={`flex ${pathname === '/dashboard/teams' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
+                            <UsersRound size={16} />
                             Teams
                         </Link>
 
-                        <Link href={'/app/integrations'} className={`flex ${pathname === '/app/integrations' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
-                            <Settings size={16} />
+                        <Link href={'/dashboard/integrations'} className={`flex ${pathname === '/dashboard/integrations' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
+                            <Settings2 size={16} />
                             Integrations
                         </Link>
 
-                        <button disabled className={`flex ${pathname === '/app/calendar' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
+                        <button disabled className={`flex ${pathname === '/dashboard/calendar' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
                             <Calendar size={16} />
                             Calendar
                         </button>
 
-                        <button disabled className={`flex ${pathname === '/app/timeoff' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
+                        <button disabled className={`flex ${pathname === '/dashboard/timeoff' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
                             <Timer size={16} />
                             Time Off
                         </button>
 
-                        <button disabled className={`flex ${pathname === '/app/projects' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
+                        <button disabled className={`flex ${pathname === '/dashboard/projects' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
                             <Folder size={16} />
                             Projects
                         </button>
 
-                        <button disabled className={`flex ${pathname === '/app/benefits' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
+                        <button disabled className={`flex ${pathname === '/dashboard/benefits' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
                             <Star size={16} />
                             Benefits
                         </button>
 
-                        <button disabled className={`flex ${pathname === '/app/documents' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
+                        <button disabled className={`flex ${pathname === '/dashboard/documents' ? 'text-primary' : ''} hover:px-8 disabled:opacity-60 duration-200 px-6 py-2 items-center gap-2`}>
                             <Notebook size={16} />
                             Documents
                         </button>
@@ -82,17 +74,21 @@ function Sidebar() {
 
                     <div>
                         <div className='text-gray-500 text-xs font-medium md:px-2'>
-                            <button className={`flex ${pathname === '/app/settings' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
+                            <button className={`flex ${pathname === '/dashboard/settings' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
                                 <Settings2 size={16} />
                                 Settings
                             </button>
 
-                            <button className={`flex ${pathname === '/app/support' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
+                            <button className={`flex ${pathname === '/dashboard/support' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
                                 <Headphones size={16} />
                                 Support
                             </button>
-                        <LogoutPage/>
-                        </div>
+
+                                {/* <button onClick={signout} className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                                    <PowerCircle className="w-6" />
+                                    <div className="hidden md:block">Sign Out</div>
+                                </button> */}
+                             </div>
 
                         <hr className='bg-gray-400 mx-2 my-4' />
 

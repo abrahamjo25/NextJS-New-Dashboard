@@ -1,5 +1,5 @@
+"use client"
 import React from 'react'
-// import { SidebarLeft } from 'iconsax-react'
 import { useCentralStore } from '@/app/Store'
 import { Sidebar } from 'lucide-react';
 

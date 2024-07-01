@@ -1,5 +1,5 @@
+"use client"
 import React, { useState } from 'react'
-// import { motion } from 'framer-motion'
 
 interface props {
     option1: string

@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { authenticate } from '@/app/_lib/actions';
+import { authenticate } from '@/app/_lib/actions/revenue';
 import { ArrowRight, Eraser,  KeyRound, User } from 'lucide-react';
  
 export default function LoginForm() {

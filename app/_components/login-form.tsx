@@ -2,7 +2,7 @@
  
 import { lusitana } from '@/app/_components/fonts';
 import { useActionState } from 'react';
-import { authenticate } from '@/app/_lib/actions';
+import { authenticate } from '@/app/_lib/actions/revenue';
 import { ArrowRight, KeyRound, TriangleAlert, UserRound } from 'lucide-react';
  
 export default function LoginForm() {

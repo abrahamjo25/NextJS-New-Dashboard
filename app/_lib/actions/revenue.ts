@@ -4,7 +4,7 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { AuthError } from 'next-auth';
-import { signIn } from '../auth';
+import { signIn, signOut } from '../../auth';
 
 
 const FormSchema = z.object({
@@ -146,3 +146,8 @@ export async function authenticate(
   }
 }
 
+// Logout
+
+export async function signout() {
+  await signOut();
+}
