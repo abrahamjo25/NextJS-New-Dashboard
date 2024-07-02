@@ -91,5 +91,5 @@ export const { auth, signIn, signOut } = NextAuth({
         }
         throw error;
       }
-  redirect('/auth/login')    
+  redirect('/dashboard')    
   }
