@@ -1,9 +1,7 @@
 "use client"
 import React from 'react'
 import { useCentralStore } from '@/app/Store'
-import { Sidebar } from 'lucide-react';
-
-
+import { Menu } from 'lucide-react';
 
 
 const PageNavbarLeftContent = React.forwardRef<
@@ -69,7 +67,7 @@ function PageNavbar({ children }: { children: React.ReactNode }) {
                 {children}
 
                 <button onClick={() => setIsSidebarOpen(true)} className='all-center text-gray-500 h-8 w-8 md:hidden'>
-                    <Sidebar size={16} />
+                    <Menu size={16} />
                 </button>
 
             </div>

@@ -5,9 +5,9 @@ import PageNavbar, { PageNavbarIconButton, PageNavbarLeftContent, PageNavbarPrim
 import PageContent from '@/app/_components/layout/PageContent'
 import Tabs from '@/app/_components/Cards/ui/tabs'
 import IntegrationsList from '@/app/_components/integrations/IntegrationsList'
-import { Bell,ChevronRight,Home, Plus, Search, Settings2 } from 'lucide-react'
-import Link from 'next/link'
+import { Bell, Plus, Search, Settings2 } from 'lucide-react'
 import { Metadata } from 'next'
+import Breadcrumb from '@/app/_components/Breadcrumb'
 
 export const metadata : Metadata = {
     title : 'Integration | Dashboard'
@@ -18,21 +18,16 @@ export default async function Integrations() {
         <div>
 
             {/* Bread Crumb */}
-            <ol className="flex items-center whitespace-nowrap py-5 ml-4 md:ml-0">
-            <li className="inline-flex items-center">
-                <Link href="/dashboard" className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary focus:outline-none focus:text-primary" >
-                <Home size={16} />
-                  Dashboard
-                </Link>
-                <ChevronRight size={16}/>
-            </li>
-            <li className="inline-flex items-center">
-                <Link href="#" className="flex items-center gap-2 text-sm text-gray-500 hover:text-primary focus:outline-none focus:text-primary">
-                Integration
-                </Link>
-            </li>
-            </ol>
-
+    
+            <Breadcrumb breadcrumbs={[
+                {label:'Dashboard', to:'/dashboard'},
+                {
+                    label: 'Integrations',
+                    to:'/dashboard/integrations',
+                    active:true,
+                },
+            ]}
+            />
             <PageNavbar>
                 <PageNavbarLeftContent>
                     <div className='border rounded-full w-10 h-10 all-center'>

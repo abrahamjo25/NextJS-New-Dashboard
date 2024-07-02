@@ -119,3 +119,32 @@ export const DELETE = async ({url, claim}:UrlParams) => {
 };
 
 
+// Delete request
+export const LOGIN = async ({url, data, claim}:UrlParams) => {
+    return await axiosInstance
+        .post(url, data, {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                accessToken: localStorage.getItem("access"),
+                idToken: localStorage.getItem("idToken"),
+                clientClaim: claim,
+            },
+        })
+        .then((response) => {
+            toast.success("Logged in successfully");
+            return response?.data;
+        })
+        .catch((error) => {
+            if (error.response?.status === 401) {
+                toast.error(`Access Denied`);
+            } else if (error.response) {
+                toast.error(`Error: ${error?.response?.data?.errors[0]}`);
+            } else if (error.request) {
+                toast.error("Error: No response received from the server");
+            } else {
+                toast.error("Error: " + error.message);
+            }
+        });
+};
+
+

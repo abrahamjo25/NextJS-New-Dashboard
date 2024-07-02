@@ -1,12 +1,12 @@
 "use client"
-
 import Image from 'next/image'
 import ProfileImage from '../_components/assets/profile.png'
 import Link, { LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
-import { ArrowRight, Calendar, Folder, Headphones, LayoutDashboard, Notebook, Settings2, Star, Timer, Triangle, UsersRound } from 'lucide-react'
-function Sidebar() {
+import { ArrowRight, Calendar, Folder, Headphones, LayoutDashboard, Notebook, Power, Settings2, Star, Timer, Triangle, UsersRound } from 'lucide-react'
+import { signout } from '../_lib/actions/revenue'
+export default async function Sidebar() {
 
     const pathname = usePathname()
 
@@ -74,21 +74,24 @@ function Sidebar() {
 
                     <div>
                         <div className='text-gray-500 text-xs font-medium md:px-2'>
-                            <button className={`flex ${pathname === '/dashboard/settings' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
-                                <Settings2 size={16} />
-                                Settings
-                            </button>
 
                             <button className={`flex ${pathname === '/dashboard/support' ? 'text-primary' : ''} hover:px-8 duration-200 px-6 py-2 items-center gap-2`}>
                                 <Headphones size={16} />
                                 Support
                             </button>
 
-                                {/* <button onClick={signout} className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                                    <PowerCircle className="w-6" />
-                                    <div className="hidden md:block">Sign Out</div>
-                                </button> */}
-                             </div>
+                            {/* <form
+                                action={ async() => {
+                                    "use server"
+                                     await signout()
+                                }}
+                                >
+                                <button className="flex hover:px-8 duration-200 px-6 py-2 items-center gap-2" >
+                                    <Power size={16} />
+                                    Sign Out
+                                </button>
+                             </form> */}
+                            </div>
 
                         <hr className='bg-gray-400 mx-2 my-4' />
 
@@ -103,8 +106,8 @@ function Sidebar() {
                                     className='rounded-full'
                                 />
                                 <div className=''>
-                                    <p className='text-sm font-semibold text-gray-800'>Steve Jobs</p>
-                                    <p className='text-xs font-medium text-gray-500'>steve@apple.com</p>
+                                    <p className='text-sm font-semibold text-gray-800'>Abirhamy</p>
+                                    <p className='text-xs font-medium text-gray-500'>abirhamy@ethiopian.com</p>
                                 </div>
                             </div>
 
@@ -133,17 +136,16 @@ const NavbarLink = ({ href, active }: { href: string, active: boolean }) => {
     )
 }
 
-const NavLink = React.forwardRef<
-    LinkProps,
-    React.ComponentPropsWithoutRef<'a'>>
-    (({ className, href, ...props }) =>
+const NavLink = React.forwardRef<HTMLAnchorElement, LinkProps>(
+    ({  href, ...props }, ref) => (
         <Link
+            ref={ref}
             href={href!}
             className={`flex ${window.location.pathname === href! ? 'text-primary' : ''} hover:px-8 duration-200 rounded-md w-full py-2 px-6 items-center gap-2`}
             {...props}
         />
     )
-NavLink.displayName = 'NavLink'
+);
+NavLink.displayName = 'NavLink';
 
 
-export default Sidebar

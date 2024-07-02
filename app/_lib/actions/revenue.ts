@@ -21,6 +21,16 @@ const FormSchema = z.object({
     date: z.string(),
   });
 
+  export type IState={
+    errors?:{
+        customerId?:string[];
+        amount?:string[];
+        status?:string[];
+        
+    };
+    message?:string | null;
+};
+
 //exporting a state
 
 export type State={
@@ -35,7 +45,7 @@ export type State={
 
 //creating invoices
 const CreateInvoice = FormSchema.omit({ id: true, date: true })
-export async function createInvoice(prevState:State,formData: FormData) {
+export async function createInvoice(prevState:IState,formData: FormData) {
     const validatedFields = CreateInvoice.safeParse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
@@ -126,25 +136,22 @@ export async function deleteInvoice(id: string) {
 
 }
 
-//authenticate
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
-  try {
-    await signIn('credentials', formData);
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return 'Invalid credentials.';
-        default:
-          return 'Something went wrong.';
-      }
-    }
-    throw error;
-  }
-}
+// //authenticate
+// export async function authenticate(
+//   prevState: string | undefined,
+//   formData: FormData,
+// ) {
+//   try {
+//     await signIn('credentials', formData);
+//   } catch (error) {
+//     if (error instanceof AuthError) {
+
+//           return 'Invalid Credentials.';
+
+//     }
+//     throw error;
+//   }
+// }
 
 // Logout
 

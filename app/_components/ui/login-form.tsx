@@ -1,78 +1,109 @@
 'use client';
 
-import { useActionState } from 'react';
-import { authenticate } from '@/app/_lib/actions/revenue';
-import { ArrowRight, Eraser,  KeyRound, User } from 'lucide-react';
+import { useActionState, useEffect } from 'react';
+import {  AuthState, authenticate } from '@/app/_lib/actions/auth';
+import {  CircleAlert, CircleUserRound,   Eye } from 'lucide-react';
+import Image from 'next/image';
+import { clientLogin } from '@/app/_services/axiosInstance';
  
 export default function LoginForm() {
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined,
-  );
+  const initialState : AuthState = {errors : {}, message : null}
+  const [state, formAction, isPending ] = useActionState(authenticate, initialState);
+
+  useEffect(() => {
+    const authenticateClient = async () => {
+        const response = await clientLogin();
+        localStorage.setItem("accessToken", response?.data?.accessToken )
+    };
+    authenticateClient();
+}, []);
  
   return (
-    <form action={formAction} className="space-y-3">
-      <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-        <h1 className={` mb-3 text-2xl`}>
-          Please log in to continue.
-        </h1>
-        <div className="w-full">
+    <>
+  <form action={formAction} className="">
+  <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
+    <div className="max-w-md w-full">
+      <a href="#"><Image src="/images/ethiopian.png" alt="logo" width={400} height={300} className="w-40 mb-8 mx-auto block" />
+      </a>
+      <div className="p-8 rounded-2xl bg-white shadow">
+        <h2 className="text-gray-800 text-center text-lg font-bold">Sign in</h2>
+        <div className="mt-8 space-y-4">
           <div>
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="userId"
-            >
-              User Id
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+            <label className="text-gray-800  mb-2 block text-sm font-semibold">User name</label>
+            <div className="relative flex items-center">
+            <input
+                className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-xl outline-primary"
                 id="userId"
                 type="text"
                 name="userId"
                 placeholder="Enter your userId address"
-                required
               />
-              <User className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <CircleUserRound  className="w-4 h-4 absolute right-4 text-primary"/>
             </div>
+            {state?.errors?.userId && state?.errors?.userId.map((error: string, index: number)=>(
+                <div key = {index}>
+                <span className="text-sm text-red-500">{error}</span>
+                </div>
+                  ))
+                }
           </div>
-          <div className="mt-4">
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+          <div>
+            <label className="text-gray-800 text-sm font-semibold mb-2 block">Password</label>
+            <div className="relative flex items-center">
+            <input
+                className="w-full text-gray-800 text-sm border rounded-xl border-gray-300 px-4 py-3 outline-primary"
                 id="password"
                 type="password"
                 name="password"
                 placeholder="Enter password"
-                required
                 minLength={6}
               />
-              <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+             <Eye className="w-4 h-4 absolute right-4 cursor-pointer  text-primary"/>
+            </div>
+                {state?.errors?.password && state?.errors?.password.map((error:string, index : number)=>(
+                <div key = {index}>
+                <span className="text-sm text-red-500">{error}</span>
+                </div>
+                  ))
+                }
+
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center">
+              <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 accent-primary rounded-2xl text-primary focus:ring-cyan-600 border-gray-300" />
+              <label htmlFor="remember-me" className="ml-3 block text-sm text-gray-800">
+                Remember me
+              </label>
+            </div>
+            <div className="text-sm">
+              <a href="#" className="text-primary hover:underline font-semibold">
+                Forgot your password?
+              </a>
             </div>
           </div>
-        </div>
-        <button className="mt-4 w-full" aria-disabled={isPending}>
-          Log in <ArrowRight className="ml-auto h-5 w-5 text-gray-50" />
-        </button>
-        <div
+          <div className="!mt-8">
+
+            <button   className="w-full py-3 px-4 text-sm tracking-wide rounded-xl text-white bg-primary hover:bg-cyan-600 focus:outline-none">
+             Sign In
+            </button>
+          </div>
+          <div
           className="flex h-8 items-end space-x-1"
           aria-live="polite"
           aria-atomic="true"
         >
-          {errorMessage && (
+          {state?.message && (
             <>
-              <Eraser className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">{errorMessage}</p>
+              <CircleAlert className="h-5 w-5 text-red-500" />
+              <p className="text-sm text-red-500">{state?.message}</p>
             </>
           )}
         </div>
+        </div>
       </div>
-    </form>
+    </div>
+  </div>
+</form>
+    </>
   );
 }
