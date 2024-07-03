@@ -1,14 +1,13 @@
 'use client';
 
 import { useActionState, useEffect } from 'react';
-import {  AuthState, authenticate } from '@/app/_lib/actions/auth';
+import { authenticate } from '@/app/_lib/actions/auth';
 import {  CircleAlert, CircleUserRound,   Eye } from 'lucide-react';
 import Image from 'next/image';
 import { clientLogin } from '@/app/_services/axiosInstance';
  
 export default function LoginForm() {
-  const initialState : AuthState = {errors : {}, message : null}
-  const [state, formAction, isPending ] = useActionState(authenticate, initialState);
+  const [errorMessage, formAction, isPending ] = useActionState(authenticate, undefined);
 
   useEffect(() => {
     const authenticateClient = async () => {
@@ -40,12 +39,6 @@ export default function LoginForm() {
               />
             <CircleUserRound  className="w-4 h-4 absolute right-4 text-primary"/>
             </div>
-            {state?.errors?.userId && state?.errors?.userId.map((error: string, index: number)=>(
-                <div key = {index}>
-                <span className="text-sm text-red-500">{error}</span>
-                </div>
-                  ))
-                }
           </div>
           <div>
             <label className="text-gray-800 text-sm font-semibold mb-2 block">Password</label>
@@ -60,13 +53,6 @@ export default function LoginForm() {
               />
              <Eye className="w-4 h-4 absolute right-4 cursor-pointer  text-primary"/>
             </div>
-                {state?.errors?.password && state?.errors?.password.map((error:string, index : number)=>(
-                <div key = {index}>
-                <span className="text-sm text-red-500">{error}</span>
-                </div>
-                  ))
-                }
-
           </div>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center">
@@ -92,10 +78,10 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-          {state?.message && (
+          {errorMessage && (
             <>
               <CircleAlert className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">{state?.message}</p>
+              <p className="text-sm text-red-500">{errorMessage}</p>
             </>
           )}
         </div>
