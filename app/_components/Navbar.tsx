@@ -2,7 +2,6 @@ import React from 'react'
 import Image from 'next/image'
 import ProfileImage from '../components/assets/profile.png'
 import { Bell, Calendar, Plus, SearchIcon, Sidebar } from 'lucide-react'
-// import { Add, CalendarEdit, DirectNotification, SearchNormal1, SidebarLeft } from 'iconsax-react'
 
 function Navbar({ isOpen, sidebarChange }: { isOpen: boolean, sidebarChange: (value: boolean) => void }) {
     return (

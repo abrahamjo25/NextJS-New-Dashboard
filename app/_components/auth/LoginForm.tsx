@@ -5,17 +5,32 @@ import { authenticate } from '@/app/_lib/actions/auth';
 import {  CircleAlert, CircleUserRound,   Eye } from 'lucide-react';
 import Image from 'next/image';
 import { clientLogin } from '@/app/_services/axiosInstance';
+import { useCentralStore } from '@/app/Store';
  
 export default function LoginForm() {
   const [errorMessage, formAction, isPending ] = useActionState(authenticate, undefined);
+  const { accessToken, setAccessToken } = useCentralStore();
 
   useEffect(() => {
     const authenticateClient = async () => {
+      if (!accessToken) { // Check if accessToken already exists
         const response = await clientLogin();
-        localStorage.setItem("accessToken", response?.data?.accessToken )
+        const token = response?.data?.accessToken;
+
+        if (token) {
+          const expirationDate = new Date();
+          expirationDate.setMonth(expirationDate.getMonth() + 1);
+          document.cookie = `accessToken=${token}; expires=${expirationDate.toUTCString()}; path=/`; // Set cookie with expiration date after one month
+          setAccessToken(token);
+        }
+      }
     };
+
     authenticateClient();
-}, []);
+  }, [accessToken, setAccessToken]);
+
+  const accessTokenValue = accessToken || ''; // Fallback value
+
  
   return (
     <>
@@ -27,15 +42,16 @@ export default function LoginForm() {
       <div className="p-8 rounded-2xl bg-white shadow">
         <h2 className="text-gray-800 text-center text-lg font-bold">Sign in</h2>
         <div className="mt-8 space-y-4">
+          <input type='hidden' name='accessToken' value={accessTokenValue}/>
           <div>
             <label className="text-gray-800  mb-2 block text-sm font-semibold">User name</label>
             <div className="relative flex items-center">
             <input
                 className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-xl outline-primary"
-                id="userId"
+                id="username"
                 type="text"
-                name="userId"
-                placeholder="Enter your userId address"
+                name="username"
+                placeholder="Enter your username"
               />
             <CircleUserRound  className="w-4 h-4 absolute right-4 text-primary"/>
             </div>
@@ -69,8 +85,8 @@ export default function LoginForm() {
           </div>
           <div className="!mt-8">
 
-            <button   className="w-full py-3 px-4 text-sm tracking-wide rounded-xl text-white bg-primary hover:bg-cyan-600 focus:outline-none">
-             Sign In
+            <button disabled={isPending}  className="w-full py-3 px-4 text-sm tracking-wide rounded-xl text-white bg-primary hover:bg-cyan-600 focus:outline-none">
+              {isPending ? "Signing.." : "Sign In"}
             </button>
           </div>
           <div

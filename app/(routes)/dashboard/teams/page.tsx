@@ -5,16 +5,27 @@ import { Add, ExportCurve, Notification, Profile, SearchNormal1 } from 'iconsax-
 import PageContent from '@/app/_components/layout/PageContent'
 import { PrimaryButton, OutlineButton } from '@/app/_components/ui/Button'
 import MembersTable from '@/app/_components/teams/MembersTable'
+import Breadcrumb from '@/app/_components/Breadcrumb'
+import { UsersRound } from 'lucide-react'
 
 function Teams() {
 
     return (
         <div className='text-gray-500 w-full'>
+              <Breadcrumb breadcrumbs={[
+                {label:'Dashboard', to:'/dashboard'},
+                {
+                    label: 'Teams',
+                    to:'/dashboard/teams',
+                    active:true,
+                },
+            ]}
+            />
             <PageNavbar>
                 <PageNavbarLeftContent>
                     <div className='border rounded-full w-10 h-10 all-center'>
                         {/* <Setting4 size={18} /> */}
-                        <Profile size={18} />
+                        <UsersRound size={18} />
                     </div>
                     <div>
                         <h1 className='text-sm font-semibold text-gray-800'>Teams</h1>

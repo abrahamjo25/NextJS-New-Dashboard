@@ -5,8 +5,8 @@ import { lusitana } from './fonts'
 import Link from 'next/link'
 const Breadcrumb = ({breadcrumbs}: {breadcrumbs: BreadCrumbs[]}) => {
   return (
-    <nav aria-label="Breadcrumb" className="hidden my-6 md:block ml-2">
-    <ol className={clsx(lusitana.className, 'flex text-sm font-semibold')}>
+    <nav aria-label="Breadcrumb" className="hidden mt-3 md:block ml-2">
+    <ol className={clsx(lusitana.className, 'flex text-sm')}>
       {breadcrumbs.map((items, index) => (
         <li
           key={items.to}

@@ -1,8 +1,7 @@
 "use client"
 
-import React, { useState } from "react"
-// import { AnimatePresence, motion } from "framer-motion"
-import Sidebar from "@/app/_components/Sidebar"
+import React from "react"
+import Sidebar from "@/app/_components/dashboard/Sidebar"
 import { useCentralStore } from "@/app/Store"
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {

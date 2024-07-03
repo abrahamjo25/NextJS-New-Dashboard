@@ -5,20 +5,28 @@ import NextAuth, { AuthError } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from '@/app/auth.config';
 import type { User } from '@/app/_lib/definitions';
+import axios, { AxiosResponse } from "axios";
 
 
-let users = {id:"1",name:"Abraham",userId:"33125",password:"Abcd@1234"}
-
-async function getUser(userId: string,password:string): Promise<User | undefined> {
-  try {
-    if(userId === users.userId && password === users.password){
-      console.log("Hello Errors",userId,password)
-      return users
-    }
-
-  } catch (error) {
-    throw new Error('Failed to fetch user.');
+// let users = {id:"1",name:"Abraham",username:"33125",password:"Abcd@1234"}
+let authURL = process.env.NEXT_PUBLIC_AUTH_URL
+async function getUser(username: string,password:string, accessToken : string): Promise<User | undefined> {
+  let credentials = {
+    username : username,
+    password : password
   }
+  try {
+    const response : AxiosResponse<User> = await axios.post(`${authURL}/api/v1/User/Login`, credentials
+      ,{
+       headers: {
+          accessToken : accessToken
+    }
+  }
+);
+    return response?.data;
+} catch (error : any) {
+    throw new Error("Failed to authenticate user.")
+}
 }
 
  //authenticate
@@ -44,14 +52,15 @@ export const { auth, signIn, signOut } = NextAuth({
     Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
-          .object({ userId: z.string(), password: z.string().min(6) })
+          .object({ username: z.string(), password: z.string().min(6), accessToken : z.string() })
           .safeParse(credentials);
  
         if (parsedCredentials.success) {
-          const { userId, password } = parsedCredentials.data;
-          const user = await getUser(userId,password);
-          if (!user) return null;
-          return user;
+          const { username, password , accessToken } = parsedCredentials.data;
+          const user = await getUser(username, password, accessToken);
+          if (user)
+             return user;
+          return null;
         }
 
         console.log('Invalid credentials')
@@ -61,3 +70,11 @@ export const { auth, signIn, signOut } = NextAuth({
     }),
   ],
 });
+
+//Logout 
+
+import { signOut as signOutAction } from '@/app/_lib/actions/auth';
+
+export const logOut = async () => {
+    await signOutAction();
+};

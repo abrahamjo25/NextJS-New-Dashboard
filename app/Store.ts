@@ -1,6 +1,5 @@
 import { create } from "zustand"
 
-
 type pageOptions = 'DASHBOARD' | 'INTEGRATIONS' | 'SETTINGS' | 'CALENDAR' | 'TIMEOFF' | 'PROJECTS' | 'TEAMS' | 'BENEFITS' | 'DOCUMENTS' | 'SUPPORT'
 
 interface centralStore {
@@ -10,6 +9,10 @@ interface centralStore {
     isSidebarOpen: boolean
     toggleSidebar: () => void
     setIsSidebarOpen: (isOpen: boolean) => void
+
+    accessToken: string | null
+    setAccessToken: (token: string) => void
+    initializeAccessToken: () => void
 }
 
 export const useCentralStore = create<centralStore>((set, get) => ({
@@ -18,5 +21,12 @@ export const useCentralStore = create<centralStore>((set, get) => ({
 
     isSidebarOpen: false,
     toggleSidebar: () => set({ isSidebarOpen: !get().isSidebarOpen }),
-    setIsSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen })
+    setIsSidebarOpen: (isOpen) => set({ isSidebarOpen: isOpen }),
+
+    accessToken: null,
+    setAccessToken: (token) => set({ accessToken: token }),
+    initializeAccessToken: () => {
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1") || null
+        set({ accessToken: token })
+    }
 }))
