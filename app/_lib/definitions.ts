@@ -1,9 +1,17 @@
 
-export type User = {
-  id: string;
-  name: string;
-  userId: string;
-  password: string;
+export type CustomUser = {
+  id?: string;
+  name?: string;
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  idToken?:string;
+  image?:string;
+  roles?: {
+    roleName?: string;
+    claims?: string[]; 
+  }[]; 
 };
 
 export type Revenue = {

@@ -1,14 +1,25 @@
 "use server"
 
 import {z} from "zod"
-import NextAuth, { AuthError } from 'next-auth';
+import NextAuth, { AuthError, User } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { authConfig } from '@/app/auth.config';
-import type { User } from '@/app/_lib/definitions';
+import { AuthConfig } from '@/app/auth.config';
 import axios, { AxiosResponse } from "axios";
 
+import type { DefaultSession } from 'next-auth';
 
-// let users = {id:"1",name:"Abraham",username:"33125",password:"Abcd@1234"}
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      accessToken: string;
+    } & DefaultSession['user'];
+  }
+
+  interface User {
+    accessToken: string;
+  }
+}
+
 let authURL = process.env.NEXT_PUBLIC_AUTH_URL
 async function getUser(username: string,password:string, accessToken : string): Promise<User | undefined> {
   let credentials = {
@@ -16,13 +27,7 @@ async function getUser(username: string,password:string, accessToken : string): 
     password : password
   }
   try {
-    const response : AxiosResponse<User> = await axios.post(`${authURL}/api/v1/User/Login`, credentials
-      ,{
-       headers: {
-          accessToken : accessToken
-    }
-  }
-);
+    const response : AxiosResponse<User> = await axios.post(`${authURL}/api/v1/User/Login`, credentials);
     return response?.data;
 } catch (error : any) {
     throw new Error("Failed to authenticate user.")
@@ -47,7 +52,7 @@ export async function authenticate(
 }
 
 export const { auth, signIn, signOut } = NextAuth({
-  ...authConfig,
+  ...AuthConfig,
   providers: [
     Credentials({
       async authorize(credentials) {
@@ -58,9 +63,16 @@ export const { auth, signIn, signOut } = NextAuth({
         if (parsedCredentials.success) {
           const { username, password , accessToken } = parsedCredentials.data;
           const user = await getUser(username, password, accessToken);
-          if (user)
-             return user;
-          return null;
+          if (!user)
+             return null;
+
+          console.log("User => ", user)
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            accessToken: user.accessToken 
+          };
         }
 
         console.log('Invalid credentials')
@@ -69,6 +81,21 @@ export const { auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.accessToken = user.accessToken;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.accessToken = token.accessToken as string;
+      }
+      return session;
+    },
+  },
+
 });
 
 //Logout 

@@ -1,6 +1,7 @@
 import { create } from "zustand"
+import { CustomUser } from "./_lib/definitions"
 
-type pageOptions = 'DASHBOARD' | 'INTEGRATIONS' | 'SETTINGS' | 'CALENDAR' | 'TIMEOFF' | 'PROJECTS' | 'TEAMS' | 'BENEFITS' | 'DOCUMENTS' | 'SUPPORT'
+type pageOptions = string
 
 interface centralStore {
     activePage: pageOptions
@@ -13,6 +14,9 @@ interface centralStore {
     accessToken: string | null
     setAccessToken: (token: string) => void
     initializeAccessToken: () => void
+
+    userData : CustomUser | null
+    setUser : (user : CustomUser | null)=> void
 }
 
 export const useCentralStore = create<centralStore>((set, get) => ({
@@ -28,5 +32,7 @@ export const useCentralStore = create<centralStore>((set, get) => ({
     initializeAccessToken: () => {
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/, "$1") || null
         set({ accessToken: token })
-    }
+    },
+    userData : null,
+    setUser : (user)=> set({userData : user})
 }))

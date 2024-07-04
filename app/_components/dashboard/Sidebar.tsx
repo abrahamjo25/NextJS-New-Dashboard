@@ -4,8 +4,10 @@ import Link, { LinkProps } from 'next/link'
 import React from 'react'
 import { ArrowRight, Headphones, Power, Triangle } from 'lucide-react'
 import NavLinks from './NavLinks'
-import { logOut, signOut } from '@/app/_lib/actions/auth'
-export default  function Sidebar() {
+import {  logOut } from '@/app/_lib/actions/auth'
+import { useSession } from 'next-auth/react';
+
+export  default   function Sidebar() {
 
     return (
         <div className='w-60 shrink-0 md:block h-screen sticky top-0 overflow-hidden'>
@@ -58,7 +60,7 @@ export default  function Sidebar() {
                                     className='rounded-full'
                                 />
                                 <div className=''>
-                                    <p className='text-sm font-semibold text-gray-800'>Abirhamy</p>
+                                    <p className='text-sm font-semibold text-gray-800'>Abirham Y</p>
                                     <p className='text-xs font-medium text-gray-500'>abirhamy@ethiopian.com</p>
                                 </div>
                             </div>
