@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { LayoutDashboard, Settings2,  UsersRound } from 'lucide-react'
+import { BriefcaseBusiness, LayoutDashboard, Settings2,  UsersRound } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
@@ -9,8 +9,8 @@ const NavLinks = () => {
 
     const links = [
         {lable:"Dashbaord",to:"/dashboard",icon:LayoutDashboard,claim:""},
-        // {lable:"Teams",to:"/dashboard/teams",icon:UsersRound,claim:""},
-        // {lable:"Integrations",to:"/dashboard/integrations",icon:Settings2,claim:""}
+        {lable:"Teams",to:"/dashboard/ff",icon:UsersRound,claim:""},
+        {lable:"Cases",to:"/dashboard/case",icon:BriefcaseBusiness,claim:""}
     ]
 
   return (
