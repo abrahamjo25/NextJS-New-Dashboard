@@ -32,7 +32,7 @@ function Dashboard() {
                             className='rounded-full'
                         />
                         <div className=''>
-                            <p className='text-sm font-semibold text-gray-800'>Steve Jobs</p>
+                            <p className='text-sm font-semibold text-gray-800'>Admin User</p>
                             <p className='text-xs font-medium text-gray-500'>Welcome back</p>
                         </div>
                     {/* </div> */}

@@ -10,13 +10,11 @@ import type { DefaultSession } from 'next-auth';
 
 declare module 'next-auth' {
   interface Session {
-    user: {
-      accessToken: string;
-    } & DefaultSession['user'];
+    user: User & DefaultSession['user'];
   }
 
   interface User {
-    accessToken: string;
+    idToken: string;
   }
 }
 
@@ -27,7 +25,14 @@ async function getUser(username: string,password:string, accessToken : string): 
     password : password
   }
   try {
-    const response : AxiosResponse<User> = await axios.post(`${authURL}/api/v1/User/Login`, credentials);
+    const response : AxiosResponse<User> = await axios.post(`${authURL}/api/v1/User/Login`, credentials
+      ,{
+       headers: {
+          accessToken : accessToken
+    }
+  }
+);
+
     return response?.data;
 } catch (error : any) {
     throw new Error("Failed to authenticate user.")
@@ -66,12 +71,11 @@ export const { auth, signIn, signOut } = NextAuth({
           if (!user)
              return null;
 
-          console.log("User => ", user)
           return {
             id: user.id,
-            name: user.name,
+            name: "Kebede",
             email: user.email,
-            accessToken: user.accessToken 
+            idToken: "My Token", 
           };
         }
 
@@ -84,13 +88,13 @@ export const { auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.accessToken;
+        return { idToken: user.idToken, ...token };
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.accessToken = token.accessToken as string;
+        session.user.idToken = token.idToken as string;
       }
       return session;
     },

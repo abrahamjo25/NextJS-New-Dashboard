@@ -9,8 +9,8 @@ const NavLinks = () => {
 
     const links = [
         {lable:"Dashbaord",to:"/dashboard",icon:LayoutDashboard,claim:""},
-        {lable:"Teams",to:"/dashboard/teams",icon:UsersRound,claim:""},
-        {lable:"Integrations",to:"/dashboard/integrations",icon:Settings2,claim:""}
+        // {lable:"Teams",to:"/dashboard/teams",icon:UsersRound,claim:""},
+        // {lable:"Integrations",to:"/dashboard/integrations",icon:Settings2,claim:""}
     ]
 
   return (
