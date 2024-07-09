@@ -8,6 +8,7 @@ import axios, { AxiosResponse } from "axios";
 
 import type { DefaultSession } from 'next-auth';
 
+// import "react-toastify/dist/ReactToastify.css";
 declare module 'next-auth' {
   interface Session {
     user: User & DefaultSession['user'];
@@ -79,7 +80,6 @@ export const { auth, signIn, signOut } = NextAuth({
           };
         }
 
-        console.log('Invalid credentials')
  
         return null;
       },
